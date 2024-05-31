@@ -1,10 +1,29 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+// Admin Route
+Route::group(
+    [
+        'as' => 'admin.',
+        'prefix' => 'admin',
+        'middleware' => ['auth']
+    ], function() {
+    // User Route 
+        Route::group(
+            [
+                'as' => 'user.',
+                'prefix' => 'user',
+                'controller' => UserController::class
+            ], function() {
+                Route::get('index', 'index')->name('index');
+        });
 });
 
 Route::get('/dashboard', function () {
